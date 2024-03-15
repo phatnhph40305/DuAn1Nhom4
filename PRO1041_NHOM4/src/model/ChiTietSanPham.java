@@ -15,7 +15,8 @@ public class ChiTietSanPham {
     public ChiTietSanPham() {
     }
 
-    public ChiTietSanPham(String maSP) {
+    public ChiTietSanPham(int id,String maSP) {
+        this.id = id;
         this.maSP = maSP;
     }
 

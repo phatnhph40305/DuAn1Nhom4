@@ -5,11 +5,14 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 import model.ChiTietSanPham;
+import model.ThuocTinh;
 import service.ChiTietSanPhamService;
+import service.ThuocTinhService;
 
 public class itf_SanPham extends javax.swing.JInternalFrame {
 
     DefaultTableModel model = new DefaultTableModel();
+    DefaultTableModel model1 = new DefaultTableModel();
 
     DefaultComboBoxModel<String> cboModel = new DefaultComboBoxModel<>();
     DefaultComboBoxModel<String> cboModel1 = new DefaultComboBoxModel<>();
@@ -18,6 +21,7 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
     DefaultComboBoxModel<String> cboModel4 = new DefaultComboBoxModel<>();
 
     ChiTietSanPhamService ctsps = new ChiTietSanPhamService();
+    ThuocTinhService tts = new ThuocTinhService();
 
     public itf_SanPham() {
         initComponents();
@@ -31,6 +35,103 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
         loadCboKichThuoc(ctsps.loadCboKichThuoc());
         loadCboThuongHieu(ctsps.loadCboThuongHieu());
         loadCboXuatXu(ctsps.loadCboXuatxu());
+        checkLoadTableThuocTinh();
+    }
+
+    private void loadTableThuocTinh(List<ThuocTinh> listtt) {
+        model1 = (DefaultTableModel) tblThuocTinh.getModel();
+        model1.setRowCount(0);
+        for (ThuocTinh thuocTinh : listtt) {
+            model1.addRow(new Object[]{thuocTinh.getId(), thuocTinh.getTen(), thuocTinh.trangthai()});
+        }
+    }
+
+    private void checkLoadTableThuocTinh() {
+        if (rdMauSac.isSelected() == true) {
+            loadTableThuocTinh(tts.loadDataMauSac());
+        }
+        if (rdThuonghieu.isSelected() == true) {
+            loadTableThuocTinh(tts.loadDataThuongHieu());
+
+        }
+        if (rdXuatxu.isSelected() == true) {
+            loadTableThuocTinh(tts.loadDataXuatXu());
+
+        }
+        if (rdKichThuoc.isSelected() == true) {
+            loadTableThuocTinh(tts.loadDataKichThuoc());
+        }
+
+    }
+
+    private void checkInsertThuocTinh() {
+        int trangthai = 1;
+        if (rdHd.isSelected() == true) {
+            trangthai = 1;
+        } else {
+            trangthai = 0;
+        }
+        if (rdMauSac.isSelected() == true) {
+            tts.insertMauSac(txtTenThuocTinh.getText(), trangthai);
+        }
+        if (rdThuonghieu.isSelected() == true) {
+            tts.insertThuongHieu(txtTenThuocTinh.getText(), trangthai);
+
+        }
+        if (rdXuatxu.isSelected() == true) {
+            tts.insertXuatXu(txtTenThuocTinh.getText(), trangthai);
+
+        }
+        if (rdKichThuoc.isSelected() == true) {
+            tts.insertKichThuoc(txtTenThuocTinh.getText(), trangthai);
+        }
+
+    }
+
+    private void checkDeleteThuocTinh() {
+        int index = tblThuocTinh.getSelectedRow();
+        int index1 = Integer.valueOf(tblThuocTinh.getValueAt(index, 0).toString());
+        if (rdMauSac.isSelected() == true) {
+            tts.deleteMauSac(index1);
+        }
+        if (rdThuonghieu.isSelected() == true) {
+            tts.deleteThuongHieu(index1);
+
+        }
+        if (rdXuatxu.isSelected() == true) {
+            tts.deleteXuatXu(index1);
+
+        }
+        if (rdKichThuoc.isSelected() == true) {
+            tts.deleteKichThuoc(index1);
+        }
+
+    }
+
+    private void checkUpdateThuocTinh() {
+        int index = tblThuocTinh.getSelectedRow();
+        int index1 = Integer.valueOf(tblThuocTinh.getValueAt(index, 0).toString());
+        int trangthai = 1;
+        if (rdHd.isSelected() == true) {
+            trangthai = 1;
+        } else {
+            trangthai = 0;
+        }
+        if (rdMauSac.isSelected() == true) {
+            tts.updateMauSac(txtTenThuocTinh.getText(), index1, trangthai);
+        }
+        if (rdThuonghieu.isSelected() == true) {
+            tts.updateThuongHieu(txtTenThuocTinh.getText(), index1, trangthai);
+
+        }
+        if (rdXuatxu.isSelected() == true) {
+            tts.updateXuatXu(txtTenThuocTinh.getText(), index1, trangthai);
+
+        }
+        if (rdKichThuoc.isSelected() == true) {
+            tts.updateKichThuoc(txtTenThuocTinh.getText(), index1, trangthai);
+        }
+
     }
 
     private void loadTableCTSP(List<ChiTietSanPham> listctsp) {
@@ -57,35 +158,119 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
             cboModel.addElement(chiTietSanPham.getMaSP());
         }
     }
-     private void loadCboMauSac(List<ChiTietSanPham> list) {
+
+    private void loadCboMauSac(List<ChiTietSanPham> list) {
         cboModel1 = (DefaultComboBoxModel<String>) cboMauSac.getModel();
         cboModel1.removeAllElements();
         for (ChiTietSanPham chiTietSanPham : list) {
             cboModel1.addElement(chiTietSanPham.getMaSP());
         }
     }
- private void loadCboKichThuoc(List<ChiTietSanPham> list) {
+
+    private void loadCboKichThuoc(List<ChiTietSanPham> list) {
         cboModel2 = (DefaultComboBoxModel<String>) cboKichThuoc.getModel();
         cboModel2.removeAllElements();
         for (ChiTietSanPham chiTietSanPham : list) {
             cboModel2.addElement(chiTietSanPham.getMaSP());
         }
     }
-  private void loadCboXuatXu(List<ChiTietSanPham> list) {
+
+    private void loadCboXuatXu(List<ChiTietSanPham> list) {
         cboModel3 = (DefaultComboBoxModel<String>) cboXuatXu.getModel();
         cboModel3.removeAllElements();
         for (ChiTietSanPham chiTietSanPham : list) {
             cboModel3.addElement(chiTietSanPham.getMaSP());
         }
     }
-   private void loadCboThuongHieu(List<ChiTietSanPham> list) {
+
+    private void loadCboThuongHieu(List<ChiTietSanPham> list) {
         cboModel4 = (DefaultComboBoxModel<String>) cboThuongHieu.getModel();
         cboModel4.removeAllElements();
         for (ChiTietSanPham chiTietSanPham : list) {
             cboModel4.addElement(chiTietSanPham.getMaSP());
         }
     }
-  
+
+    private void mouseClickCTSP(int index) {
+
+        String maSP = tblChiTietSanPham.getValueAt(index, 1).toString();
+        String mauSac = tblChiTietSanPham.getValueAt(index, 4).toString();
+        String kichThuoc = tblChiTietSanPham.getValueAt(index, 5).toString();
+        String thuongHieu = tblChiTietSanPham.getValueAt(index, 6).toString();
+        String xuatXu = tblChiTietSanPham.getValueAt(index, 7).toString();
+        String trangThai = tblChiTietSanPham.getValueAt(index, 8).toString();
+
+        cboMaSP.setSelectedItem(maSP);
+        cboKichThuoc.setSelectedItem(kichThuoc);
+        cboThuongHieu.setSelectedItem(thuongHieu);
+        cboMauSac.setSelectedItem(mauSac);
+        cboXuatXu.setSelectedItem(xuatXu);
+        txtGia.setText(tblChiTietSanPham.getValueAt(index, 3).toString());
+        txtSoLuong.setText(tblChiTietSanPham.getValueAt(index, 2).toString());
+        if (trangThai.equalsIgnoreCase("Hoạt động")) {
+            rdHd1.setSelected(true);
+        } else {
+            rdKhongHD1.setSelected(true);
+        }
+    }
+
+    private void mouseClickThuocTinh(int index) {
+        String ten = tblThuocTinh.getValueAt(index, 1).toString();
+        txtTenThuocTinh.setText(ten);
+        String trangThai = tblThuocTinh.getValueAt(index, 2).toString();
+        if (trangThai.equalsIgnoreCase("Hoạt động")) {
+            rdHd.setSelected(true);
+        } else {
+            rdKhd.setSelected(true);
+        }
+    }
+
+    private void insertChiTietSP() {
+        int soluong = Integer.valueOf(txtSoLuong.getText());
+        double gia = Double.valueOf(txtGia.getText());
+        int sanpham = cboMaSP.getSelectedIndex() + 1;
+        int mausac = cboMauSac.getSelectedIndex() + 1;
+        int kichthuoc = cboKichThuoc.getSelectedIndex() + 1;
+        int thuonghieu = cboThuongHieu.getSelectedIndex() + 1;
+        int xuatxu = cboXuatXu.getSelectedIndex() + 1;
+        int trangthai = 1;
+        if (rdHd1.isSelected() == true) {
+            trangthai = 1;
+        }
+        if (rdKhongHD1.isSelected() == true) {
+            trangthai = 0;
+        }
+        ctsps.insertChiTietSP(soluong, gia, mausac, kichthuoc, thuonghieu, xuatxu, trangthai, sanpham);
+    }
+
+    private void deleteChiTietSP() {
+        int index = tblChiTietSanPham.getSelectedRow();
+        int id = Integer.valueOf(tblChiTietSanPham.getValueAt(index, 0).toString());
+        ctsps.deleteChiTietSP(id);
+    }
+
+    private void updateChitietSP() {
+        int index = tblChiTietSanPham.getSelectedRow();
+        int id = Integer.valueOf(tblChiTietSanPham.getValueAt(index, 0).toString());
+        int soluong = Integer.valueOf(txtSoLuong.getText());
+        double gia = Double.valueOf(txtGia.getText());
+        int sanpham = cboMaSP.getSelectedIndex() + 1;
+        int mausac = cboMauSac.getSelectedIndex() + 1;
+        int kichthuoc = cboKichThuoc.getSelectedIndex() + 1;
+        int thuonghieu = cboThuongHieu.getSelectedIndex() + 1;
+        int xuatxu = cboXuatXu.getSelectedIndex() + 1;
+        int trangthai = 1;
+        if (rdHd1.isSelected() == true) {
+            trangthai = 1;
+        }
+        if (rdKhongHD1.isSelected() == true) {
+            trangthai = 0;
+        }
+
+        ctsps.updateChiTietSP(id, sanpham, soluong, gia, mausac, kichthuoc, thuonghieu, xuatxu, trangthai);
+
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -138,8 +323,8 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
         jLabel51 = new javax.swing.JLabel();
         txtGia = new javax.swing.JTextField();
         jLabel52 = new javax.swing.JLabel();
-        rdConhang1 = new javax.swing.JRadioButton();
-        rdHethang1 = new javax.swing.JRadioButton();
+        rdHd1 = new javax.swing.JRadioButton();
+        rdKhongHD1 = new javax.swing.JRadioButton();
         jPanel18 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -194,6 +379,7 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
         btnLui3 = new javax.swing.JButton();
         btnTien3 = new javax.swing.JButton();
         lbSoTrang3 = new javax.swing.JLabel();
+        btnXoa1 = new javax.swing.JButton();
 
         jPanel29.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Quản lý sản phẩm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
@@ -515,7 +701,7 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
 
         jLabel48.setText("Xuất Xứ");
 
-        jLabel49.setText("Kích thước");
+        jLabel49.setText("Size");
 
         cboXuatXu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -529,11 +715,11 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
 
         jLabel52.setText("Trạng thái");
 
-        buttonGroup1.add(rdConhang1);
-        rdConhang1.setText("Hoạt động");
+        buttonGroup1.add(rdHd1);
+        rdHd1.setText("Hoạt động");
 
-        buttonGroup1.add(rdHethang1);
-        rdHethang1.setText("Không hoạt động");
+        buttonGroup1.add(rdKhongHD1);
+        rdKhongHD1.setText("Không hoạt động");
 
         jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder("Lọc sản phẩm"));
 
@@ -701,28 +887,28 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
 
         jButton4.setText("Xuất file");
 
-        btnDau2.setText("Pre");
+        btnDau2.setText("<<");
         btnDau2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDau2ActionPerformed(evt);
             }
         });
 
-        btnLui2.setText("Lùi");
+        btnLui2.setText("|<");
         btnLui2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLui2ActionPerformed(evt);
             }
         });
 
-        btnTien2.setText("Tiến");
+        btnTien2.setText(">|");
         btnTien2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTien2ActionPerformed(evt);
             }
         });
 
-        btnCuoi2.setText("Next");
+        btnCuoi2.setText(">>");
         btnCuoi2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCuoi2ActionPerformed(evt);
@@ -775,14 +961,13 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
                                         .addGap(18, 18, 18)
                                         .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel5)
-                                            .addComponent(jLabel6))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addComponent(jLabel6)))
                                     .addGroup(jPanel16Layout.createSequentialGroup()
                                         .addGap(0, 73, Short.MAX_VALUE)
                                         .addComponent(btnThemCTSP)
-                                        .addGap(35, 35, 35)
+                                        .addGap(27, 27, 27)
                                         .addComponent(btnXoa)
-                                        .addGap(18, 18, 18)
+                                        .addGap(26, 26, 26)
                                         .addComponent(btnSuaCTSP)
                                         .addGap(20, 20, 20)))
                                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -795,18 +980,19 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
                                         .addComponent(jButton4))
                                     .addGroup(jPanel16Layout.createSequentialGroup()
                                         .addGap(62, 62, 62)
-                                        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addGroup(jPanel16Layout.createSequentialGroup()
-                                                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                    .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel47)
-                                                        .addComponent(jLabel48, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                    .addComponent(jLabel49))
-                                                .addGap(25, 25, 25)
                                                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(cboMauSac, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(cboKichThuoc, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(cboXuatXu, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                    .addGroup(jPanel16Layout.createSequentialGroup()
+                                                        .addComponent(jLabel47)
+                                                        .addGap(0, 0, Short.MAX_VALUE))
+                                                    .addComponent(jLabel48, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(jLabel49, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addGap(18, 18, 18)
+                                                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(cboKichThuoc, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(cboXuatXu, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(cboMauSac, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                             .addGroup(jPanel16Layout.createSequentialGroup()
                                                 .addComponent(jLabel53)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -815,9 +1001,9 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
                             .addGroup(jPanel16Layout.createSequentialGroup()
                                 .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(rdConhang1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(rdHd1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(rdHethang1)
+                                .addComponent(rdKhongHD1)
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(34, 34, 34))
             .addGroup(jPanel16Layout.createSequentialGroup()
@@ -875,8 +1061,8 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
                 .addGap(12, 12, 12)
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel52)
-                    .addComponent(rdConhang1)
-                    .addComponent(rdHethang1))
+                    .addComponent(rdHd1)
+                    .addComponent(rdKhongHD1))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -908,7 +1094,7 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(147, Short.MAX_VALUE))
+                .addContainerGap(148, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -927,6 +1113,7 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
         jLabel3.setText("Trạng thái");
 
         buttonGroup3.add(rdHd);
+        rdHd.setSelected(true);
         rdHd.setText("Hoạt động");
 
         buttonGroup3.add(rdKhd);
@@ -968,6 +1155,7 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
         );
 
         buttonGroup4.add(rdThuonghieu);
+        rdThuonghieu.setSelected(true);
         rdThuonghieu.setText("Thương hiệu");
         rdThuonghieu.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1046,7 +1234,7 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
                 {null, null, null}
             },
             new String [] {
-                "Mã", "Tên", "Trạng thái"
+                "ID", "Tên", "Trạng thái"
             }
         ));
         tblThuocTinh.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1079,28 +1267,28 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
 
         jButton1.setText("Xuất file");
 
-        btnDau3.setText("Đầu ");
+        btnDau3.setText("<<");
         btnDau3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDau3ActionPerformed(evt);
             }
         });
 
-        btnCuoi3.setText("Cuối");
+        btnCuoi3.setText(">>");
         btnCuoi3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCuoi3ActionPerformed(evt);
             }
         });
 
-        btnLui3.setText("Lùi");
+        btnLui3.setText("|<");
         btnLui3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLui3ActionPerformed(evt);
             }
         });
 
-        btnTien3.setText("Tiến");
+        btnTien3.setText(">|");
         btnTien3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTien3ActionPerformed(evt);
@@ -1108,6 +1296,13 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
         });
 
         lbSoTrang3.setText("Số trang");
+
+        btnXoa1.setText("Xóa");
+        btnXoa1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoa1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -1120,21 +1315,24 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 721, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(40, 40, 40))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(43, 43, 43)
                                         .addComponent(btnThemThuocTinh)
-                                        .addGap(56, 56, 56)
+                                        .addGap(33, 33, 33)
                                         .addComponent(btnSuaThuocTinh)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnClearThuocTinh))
-                                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btnXoa1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnClearThuocTinh)
+                                        .addGap(1, 1, 1)))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(40, 40, 40)
-                                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(14, 14, 14)
+                                        .addGap(17, 17, 17)
                                         .addComponent(jButton1))))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(157, 157, 157)
@@ -1161,7 +1359,8 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
                     .addComponent(btnThemThuocTinh)
                     .addComponent(btnSuaThuocTinh)
                     .addComponent(btnClearThuocTinh)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(btnXoa1))
                 .addGap(90, 90, 90)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -1234,6 +1433,7 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnQuayLaiActionPerformed
 
     private void tblChiTietSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblChiTietSanPhamMouseClicked
+        mouseClickCTSP(tblChiTietSanPham.getSelectedRow());
 
     }//GEN-LAST:event_tblChiTietSanPhamMouseClicked
 
@@ -1242,11 +1442,13 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnThemSPActionPerformed
 
     private void btnThemCTSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemCTSPActionPerformed
-
+        insertChiTietSP();
+        loadTableCTSP(ctsps.loadDataTableCTSP());
     }//GEN-LAST:event_btnThemCTSPActionPerformed
 
     private void btnThemThuocTinhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemThuocTinhActionPerformed
-
+        checkInsertThuocTinh();
+        checkLoadTableThuocTinh();
 
     }//GEN-LAST:event_btnThemThuocTinhActionPerformed
 
@@ -1263,18 +1465,20 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnClearCTSPActionPerformed
 
     private void tblThuocTinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblThuocTinhMouseClicked
-
+        mouseClickThuocTinh(tblThuocTinh.getSelectedRow());
     }//GEN-LAST:event_tblThuocTinhMouseClicked
 
     private void rdThuonghieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdThuonghieuActionPerformed
-
+        checkLoadTableThuocTinh();
     }//GEN-LAST:event_rdThuonghieuActionPerformed
 
     private void rdMauSacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdMauSacActionPerformed
+        checkLoadTableThuocTinh();
 
     }//GEN-LAST:event_rdMauSacActionPerformed
 
     private void rdKichThuocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdKichThuocActionPerformed
+        checkLoadTableThuocTinh();
 
     }//GEN-LAST:event_rdKichThuocActionPerformed
 
@@ -1288,12 +1492,14 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnSuaSPActionPerformed
 
     private void btnSuaCTSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaCTSPActionPerformed
-
+        updateChitietSP();
+        loadTableCTSP(ctsps.loadDataTableCTSP());
 
     }//GEN-LAST:event_btnSuaCTSPActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-
+        deleteChiTietSP();
+        loadTableCTSP(ctsps.loadDataTableCTSP());
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnSearchGiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchGiaActionPerformed
@@ -1301,7 +1507,8 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnSearchGiaActionPerformed
 
     private void btnSuaThuocTinhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaThuocTinhActionPerformed
-
+        checkUpdateThuocTinh();
+        checkLoadTableThuocTinh();
     }//GEN-LAST:event_btnSuaThuocTinhActionPerformed
 
     private void btnDau1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDau1ActionPerformed
@@ -1365,12 +1572,17 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_rdXuatxuMouseClicked
 
     private void rdXuatxuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdXuatxuActionPerformed
-        // TODO add your handling code here:
+        checkLoadTableThuocTinh();
     }//GEN-LAST:event_rdXuatxuActionPerformed
 
     private void btnQuaylaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuaylaiActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnQuaylaiActionPerformed
+
+    private void btnXoa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoa1ActionPerformed
+        checkDeleteThuocTinh();
+        checkLoadTableThuocTinh();
+    }//GEN-LAST:event_btnXoa1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1400,6 +1612,7 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnTien2;
     private javax.swing.JButton btnTien3;
     private javax.swing.JButton btnXoa;
+    private javax.swing.JButton btnXoa1;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.ButtonGroup buttonGroup3;
@@ -1457,11 +1670,11 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lbSoTrang2;
     private javax.swing.JLabel lbSoTrang3;
     private javax.swing.JRadioButton rdConHang;
-    private javax.swing.JRadioButton rdConhang1;
     private javax.swing.JRadioButton rdHd;
+    private javax.swing.JRadioButton rdHd1;
     private javax.swing.JRadioButton rdHetHang;
-    private javax.swing.JRadioButton rdHethang1;
     private javax.swing.JRadioButton rdKhd;
+    private javax.swing.JRadioButton rdKhongHD1;
     private javax.swing.JRadioButton rdKichThuoc;
     private javax.swing.JRadioButton rdMauSac;
     private javax.swing.JRadioButton rdThuonghieu;
