@@ -18,7 +18,7 @@ public class JeansStoreView extends javax.swing.JFrame {
     public JeansStoreView() {
         initComponents();
         this.dispose();
-        setUndecorated(true);
+        
         setSize(1400, 800);
         this.setLocationRelativeTo(null);
         itf_ThongKe thongKe = new itf_ThongKe();
