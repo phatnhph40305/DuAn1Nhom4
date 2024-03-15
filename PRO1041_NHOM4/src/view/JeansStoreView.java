@@ -1,24 +1,19 @@
-
 package view;
 
 import java.awt.Color;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-
 public class JeansStoreView extends javax.swing.JFrame {
 
-   Color defaultColor = new Color(102,255,102);
-    Color selectedColor = new Color(153,153,153);
+    Color defaultColor = new Color(102, 255, 102);
+    Color selectedColor = new Color(153, 153, 153);
     Color enterColor = new Color(228, 227, 227);
 
-    /**
-     * Creates new form AdamStoreView
-     */
     public JeansStoreView() {
         initComponents();
         this.dispose();
-        setUndecorated(true);
+//        setUndecorated(true);
         setSize(1400, 800);
         this.setLocationRelativeTo(null);
         itf_ThongKe thongKe = new itf_ThongKe();
@@ -26,7 +21,6 @@ public class JeansStoreView extends javax.swing.JFrame {
         jdpMain.add(thongKe).setVisible(true);
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
