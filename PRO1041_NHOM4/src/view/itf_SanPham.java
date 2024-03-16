@@ -2,10 +2,13 @@ package view;
 
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 import model.ChiTietSanPham;
 import service.ChiTietSanPhamService;
+import model.SanPham;
+import service.SanPhamServices;
 
 public class itf_SanPham extends javax.swing.JInternalFrame {
 
@@ -16,7 +19,7 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
     DefaultComboBoxModel<String> cboModel2 = new DefaultComboBoxModel<>();
     DefaultComboBoxModel<String> cboModel3 = new DefaultComboBoxModel<>();
     DefaultComboBoxModel<String> cboModel4 = new DefaultComboBoxModel<>();
-
+    SanPhamServices spsv = new SanPhamServices();
     ChiTietSanPhamService ctsps = new ChiTietSanPhamService();
 
     public itf_SanPham() {
@@ -25,12 +28,73 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
         BasicInternalFrameUI uI = (BasicInternalFrameUI) this.getUI();
         uI.setNorthPane(null);
         this.setSize(1300, 755);
+        loadTableSp(this.spsv.getListSP());
         loadTableCTSP(ctsps.loadDataTableCTSP());
         loadCboMaSP(ctsps.loadCboMaSP());
         loadCboMauSac(ctsps.loadCboMauSac());
         loadCboKichThuoc(ctsps.loadCboKichThuoc());
         loadCboThuongHieu(ctsps.loadCboThuongHieu());
         loadCboXuatXu(ctsps.loadCboXuatxu());
+    }
+
+    private void loadTableSp(List<SanPham> listSp) {
+        model = (DefaultTableModel) tblSanPham.getModel();
+        model.setRowCount(0);
+        String trangThai = "";
+        for (SanPham sanPham : listSp) {
+            if (sanPham.getTrangThai() == 1) {
+                trangThai = "Hoạt động";
+            } else {
+                trangThai = "Không hoạt động";
+            }
+            model.addRow(new Object[]{
+                sanPham.getIdSP(), sanPham.getMaSP(), sanPham.getTenSp(), trangThai
+            });
+        }
+
+    }
+
+    public boolean validateSanPham() {
+        if (txtMaSanPham.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(this, "Không được để trống mã sản phẩm");
+            return false;
+        }
+        if (txtTenSanPham.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(this, ":Không được để trống tên sản phẩm");
+            return false;
+        }
+        if (rdConHang.isSelected() == false && rdHetHang.isSelected() == false) {
+            JOptionPane.showMessageDialog(this, "vui lòng chọn trạng thái.");
+            return false;
+        }
+
+        return true;
+    }
+
+    public SanPham readFormSanPham() {
+        int trangThai;
+
+        if (rdConHang.isSelected()) {
+            trangThai = 1;
+
+        } else {
+            trangThai = 0;
+
+        }
+        return new SanPham(txtMaSanPham.getText(), txtTenSanPham.getText(), trangThai);
+    }
+
+    public int loadFormSanPham(int index) {
+        txtMaSanPham.setText(this.spsv.getListSP().get(index).getMaSP());
+        txtTenSanPham.setText(this.spsv.getListSP().get(index).getTenSp());
+        int trangThai = this.spsv.getListSP().get(index).getTrangThai();
+        if (trangThai == 1) {
+            rdConHang.setSelected(true);
+        } else {
+            rdHetHang.setSelected(true);
+
+        }
+        return this.spsv.getListSP().get(index).getIdSP();
     }
 
     private void loadTableCTSP(List<ChiTietSanPham> listctsp) {
@@ -57,36 +121,42 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
             cboModel.addElement(chiTietSanPham.getMaSP());
         }
     }
-     private void loadCboMauSac(List<ChiTietSanPham> list) {
+
+    private void loadCboMauSac(List<ChiTietSanPham> list) {
         cboModel1 = (DefaultComboBoxModel<String>) cboMauSac.getModel();
         cboModel1.removeAllElements();
         for (ChiTietSanPham chiTietSanPham : list) {
             cboModel1.addElement(chiTietSanPham.getMaSP());
         }
     }
- private void loadCboKichThuoc(List<ChiTietSanPham> list) {
+
+    private void loadCboKichThuoc(List<ChiTietSanPham> list) {
         cboModel2 = (DefaultComboBoxModel<String>) cboKichThuoc.getModel();
         cboModel2.removeAllElements();
         for (ChiTietSanPham chiTietSanPham : list) {
             cboModel2.addElement(chiTietSanPham.getMaSP());
         }
     }
-  private void loadCboXuatXu(List<ChiTietSanPham> list) {
+
+    private void loadCboXuatXu(List<ChiTietSanPham> list) {
         cboModel3 = (DefaultComboBoxModel<String>) cboXuatXu.getModel();
         cboModel3.removeAllElements();
         for (ChiTietSanPham chiTietSanPham : list) {
             cboModel3.addElement(chiTietSanPham.getMaSP());
         }
     }
-   private void loadCboThuongHieu(List<ChiTietSanPham> list) {
+
+    private void loadCboThuongHieu(List<ChiTietSanPham> list) {
         cboModel4 = (DefaultComboBoxModel<String>) cboThuongHieu.getModel();
         cboModel4.removeAllElements();
         for (ChiTietSanPham chiTietSanPham : list) {
             cboModel4.addElement(chiTietSanPham.getMaSP());
         }
     }
-  
+
     @SuppressWarnings("unchecked")
+
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -205,6 +275,11 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
 
         buttonGroup2.add(rdConHang);
         rdConHang.setText("Hoạt động");
+        rdConHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdConHangActionPerformed(evt);
+            }
+        });
 
         buttonGroup2.add(rdHetHang);
         rdHetHang.setText("Không hoạt động");
@@ -339,25 +414,37 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel9.getAccessibleContext().setAccessibleName("Trạng thái");
-
         tblSanPham.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Mã SP", "Tên SP", "Trạng thái", "Xuất xứ", "Tên loại SP"
+                "id Sản Phẩm", "Mã SP", "Tên SP", "Trạng thái"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblSanPham.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblSanPhamMouseClicked(evt);
             }
         });
         jScrollPane3.setViewportView(tblSanPham);
+        if (tblSanPham.getColumnModel().getColumnCount() > 0) {
+            tblSanPham.getColumnModel().getColumn(0).setResizable(false);
+            tblSanPham.getColumnModel().getColumn(1).setResizable(false);
+            tblSanPham.getColumnModel().getColumn(2).setResizable(false);
+            tblSanPham.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         btnThemSP.setText("Thêm");
         btnThemSP.addActionListener(new java.awt.event.ActionListener() {
@@ -775,8 +862,7 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
                                         .addGap(18, 18, 18)
                                         .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel5)
-                                            .addComponent(jLabel6))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addComponent(jLabel6)))
                                     .addGroup(jPanel16Layout.createSequentialGroup()
                                         .addGap(0, 73, Short.MAX_VALUE)
                                         .addComponent(btnThemCTSP)
@@ -1226,7 +1312,9 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cbo1ActionPerformed
 
     private void tblSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSanPhamMouseClicked
-
+        int index = tblSanPham.getSelectedRow();
+        loadFormSanPham(index);
+        
     }//GEN-LAST:event_tblSanPhamMouseClicked
 
     private void btnQuayLaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuayLaiActionPerformed
@@ -1238,7 +1326,12 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tblChiTietSanPhamMouseClicked
 
     private void btnThemSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemSPActionPerformed
-
+        if (validateSanPham()) {
+            if (spsv.insertSanPham(readFormSanPham()) > 0) {
+                JOptionPane.showMessageDialog(this, "Thêm thành công");
+                loadTableSp(this.spsv.getListSP());
+            }
+        }
     }//GEN-LAST:event_btnThemSPActionPerformed
 
     private void btnThemCTSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemCTSPActionPerformed
@@ -1283,7 +1376,13 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnSearch2aActionPerformed
 
     private void btnSuaSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaSPActionPerformed
-
+        if (validateSanPham()) {
+            if (this.spsv.updateSP(loadFormSanPham(tblSanPham.getSelectedRow()), readFormSanPham())>0) {
+                JOptionPane.showMessageDialog(this,loadFormSanPham(tblSanPham.getSelectedRow()) );
+                JOptionPane.showMessageDialog(this, "Cập nhật thành công");
+                loadTableSp(this.spsv.getListSP());
+            }
+        }
 
     }//GEN-LAST:event_btnSuaSPActionPerformed
 
@@ -1371,6 +1470,10 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
     private void btnQuaylaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuaylaiActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnQuaylaiActionPerformed
+
+    private void rdConHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdConHangActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rdConHangActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
