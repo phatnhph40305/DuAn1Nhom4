@@ -1590,6 +1590,7 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
                 loadTableSp(this.spsv.getListSP());
             
         }
+        
 
     }//GEN-LAST:event_btnSuaSPActionPerformed
 
