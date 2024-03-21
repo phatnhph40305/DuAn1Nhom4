@@ -21,7 +21,7 @@ public class JeansStoreView extends javax.swing.JFrame {
         setSize(1400, 800);
         this.setLocationRelativeTo(null);
         chucVu = DangNhapView.chucVu;
-        chucVu = "quản lý";
+//        chucVu = "quản lý";
         check = chucVu.equalsIgnoreCase("quản lý");
         if (check) {
             itf_ThongKe thongKe = new itf_ThongKe();
