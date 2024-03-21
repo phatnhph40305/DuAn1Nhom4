@@ -58,8 +58,8 @@ public class SanPhamServices {
         return check;
     }
 
-    public int updateSP(int idSp, SanPham sp) {
-        int check = -1;
+    public void updateSP(int idSp, SanPham sp) {
+        
         sql = " update SanPham set ma = ?,Ten =?,TrangThai = ? where IdSanPham =?";
 
         try {
@@ -69,13 +69,13 @@ public class SanPhamServices {
             ps.setString(2, sp.getTenSp());
             ps.setInt(3, sp.getTrangThai());
             ps.setInt(4, idSp);
-            check = ps.executeUpdate();
+             ps.executeUpdate();
 
         } catch (Exception e) {
             e.printStackTrace();
-            return check = 0;
+          
         }
-        return check;
+    
     }
 
 }
