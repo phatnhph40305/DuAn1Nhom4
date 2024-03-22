@@ -14,16 +14,16 @@ import model.SanPham;
  * @author Acer
  */
 public class SanPhamServices {
-    
+
+    public SanPhamServices() {
+    }
+
     private List<SanPham> listSP;
     private Connection con = null;
     private PreparedStatement ps = null;
     private ResultSet rs = null;
     private String sql;
-    
-    public SanPhamServices() {
-    }
-    
+
     public List<SanPham> getListSP() {
         listSP = new ArrayList<>();
         sql = "select IdSanPham, Ma,ten,TrangThai,NgayTao,NgaySua from SanPham;";
@@ -40,7 +40,7 @@ public class SanPhamServices {
         }
         return listSP;
     }
-    
+
     public int insertSanPham(SanPham sanPham) {
         int check = -1;
         sql = "insert into SanPham(Ma,Ten,TrangThai) values(?,?,?);";
@@ -57,10 +57,10 @@ public class SanPhamServices {
         }
         return check;
     }
-    
-    public int updateSP(int idSp, SanPham sp) {
-        int check = -1;
-        sql = " update SanPham set ma = ?,Ten =?,TrangThai = ? where IdSanPham =?;" ;
+
+    public void updateSP(int idSp, SanPham sp) {
+        
+        sql = " update SanPham set ma = ?,Ten =?,TrangThai = ? where IdSanPham =?";
 
         try {
             con = DBConnect.getConnection();
@@ -69,13 +69,13 @@ public class SanPhamServices {
             ps.setString(2, sp.getTenSp());
             ps.setInt(3, sp.getTrangThai());
             ps.setInt(4, idSp);
-            check = ps.executeUpdate();
-            
+             ps.executeUpdate();
+
         } catch (Exception e) {
             e.printStackTrace();
-            return check = 0;
+          
         }
-        return check;
-    }
     
+    }
+
 }
