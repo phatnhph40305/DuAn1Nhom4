@@ -4,6 +4,7 @@ public class ChiTietSanPham {
 
     private int id;
     private String maSP;
+    private String ten;
     private int soluong;
     private double dongia;
     private String mauSac;
@@ -12,10 +13,22 @@ public class ChiTietSanPham {
     private String xuatXu;
     private int trangThai;
 
+    public ChiTietSanPham(int id,String maSP, String ten, int soluong, String mauSac, String kichThuoc, String thuongHieu, String xuatXu, double dongia) {
+        this.id = id;
+        this.maSP = maSP;
+        this.ten = ten;
+        this.soluong = soluong;
+        this.mauSac = mauSac;
+        this.kichThuoc = kichThuoc;
+        this.thuongHieu = thuongHieu;
+        this.xuatXu = xuatXu;
+        this.dongia = dongia;
+    }
+
     public ChiTietSanPham() {
     }
 
-    public ChiTietSanPham(int id,String maSP) {
+    public ChiTietSanPham(int id, String maSP) {
         this.id = id;
         this.maSP = maSP;
     }
@@ -121,6 +134,14 @@ public class ChiTietSanPham {
 
     public void setTrangThai(int trangThai) {
         this.trangThai = trangThai;
+    }
+
+    public String getTen() {
+        return ten;
+    }
+
+    public void setTen(String ten) {
+        this.ten = ten;
     }
 
 }
