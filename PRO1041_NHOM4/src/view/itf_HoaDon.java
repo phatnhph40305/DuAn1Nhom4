@@ -61,7 +61,13 @@ public class itf_HoaDon extends javax.swing.JInternalFrame {
         }
     }
 
-
+    private void inserttoGioHang() {
+        String soluong = JOptionPane.showInputDialog("nhập số lượng");
+        int index = BangSanPham.getSelectedRow();
+        int id = Integer.valueOf(BangSanPham.getValueAt(index, 0).toString());
+        hds.setSoluongSanPham(id, Integer.valueOf(soluong));
+        loadTableSanPham(hds.loadDataTableCTSP());
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

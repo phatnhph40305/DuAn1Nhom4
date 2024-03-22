@@ -1584,13 +1584,12 @@ public class itf_SanPham extends javax.swing.JInternalFrame {
 
     private void btnSuaSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaSPActionPerformed
         if (validateSanPham()) {
-            this.spsv.updateSP(Integer.valueOf(tblSanPham.getValueAt(tblSanPham.getSelectedRow(), 0).toString()), readFormSanPham());
-             
+            if (this.spsv.updateSP(loadFormSanPham(tblSanPham.getSelectedRow()), readFormSanPham())>0) {
+                JOptionPane.showMessageDialog(this,loadFormSanPham(tblSanPham.getSelectedRow()) );
                 JOptionPane.showMessageDialog(this, "Cập nhật thành công");
                 loadTableSp(this.spsv.getListSP());
-            
+            }
         }
-        
 
     }//GEN-LAST:event_btnSuaSPActionPerformed
 
