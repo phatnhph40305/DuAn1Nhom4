@@ -10,10 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import model.DangNhap;
 
-/**
- *
- * @author Acer
- */
+
 public class DangNhapServices {
 
     private List<DangNhap> listDangNhap;
