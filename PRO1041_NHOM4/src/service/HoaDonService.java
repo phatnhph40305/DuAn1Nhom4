@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import model.ChiTietSanPham;
 import model.HoaDon;
 import model.HoaDonChiTiet;
@@ -247,6 +248,7 @@ public class HoaDonService {
             ps.setInt(3, idhd);
 
             ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Thanh toán thành công");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -309,6 +311,7 @@ public class HoaDonService {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Hủy thành công");
         } catch (Exception e) {
             e.printStackTrace();
         }   

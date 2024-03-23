@@ -182,6 +182,7 @@ public class itf_HoaDon extends javax.swing.JInternalFrame {
         hds.thanhtoantHoaDon(idkh, idnd, idhoadon);
         loadTableHoaDon0(hds.loadTableHoaDon0());
         loadTableHoaDon1(hds.loadTableHoaDon1());
+        
     }
 
     private void huyHoaDon() {
@@ -224,6 +225,15 @@ public class itf_HoaDon extends javax.swing.JInternalFrame {
                 chiTietSanPham.getDongia()
             });
         }
+    }
+
+    private void clear() {
+        txtMaKhachHang.setText("");
+        txtMaNhanVuen.setText("");
+        txtTienKhachDua.setText("");
+        txtTienThua.setText("");
+        txtTongtien.setText("");
+        cbohttt.setSelectedIndex(0);
     }
 
     @SuppressWarnings("unchecked")
@@ -655,7 +665,7 @@ public class itf_HoaDon extends javax.swing.JInternalFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -743,6 +753,8 @@ public class itf_HoaDon extends javax.swing.JInternalFrame {
 
         } else {
             thanhToan();
+            clear();
+            modelhdct.setRowCount(0);
         }
     }//GEN-LAST:event_btnThanhToanActionPerformed
 
@@ -794,7 +806,7 @@ public class itf_HoaDon extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtFindCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtFindCaretUpdate
-Find(hds.findDataTableCTSP(txtFind.getText()));
+        Find(hds.findDataTableCTSP(txtFind.getText()));
     }//GEN-LAST:event_txtFindCaretUpdate
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
