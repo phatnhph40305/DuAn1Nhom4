@@ -10,15 +10,26 @@ public class JeansStoreView extends javax.swing.JFrame {
     Color selectedColor = new Color(153, 153, 153);
     Color enterColor = new Color(228, 227, 227);
 
+    private String chucVu;
+    private boolean check;
 
     public JeansStoreView() {
         initComponents();
         this.dispose();
         setSize(1400, 800);
         this.setLocationRelativeTo(null);
-        itf_ThongKe thongKe = new itf_ThongKe();
-        jdpMain.removeAll();
-        jdpMain.add(thongKe).setVisible(true);
+        chucVu = DangNhapView.chucVu;
+        chucVu = "quản lý";
+        check = chucVu.equalsIgnoreCase("quản lý");
+        if (check) {
+            itf_ThongKe thongKe = new itf_ThongKe();
+            jdpMain.removeAll();
+            jdpMain.add(thongKe).setVisible(true);
+        } else {
+            itf_KhachHang khachHang = new itf_KhachHang();
+            jdpMain.removeAll();
+            jdpMain.add(khachHang).setVisible(true);
+        }
     }
 
     @SuppressWarnings("unchecked")
